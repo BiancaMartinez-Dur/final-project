@@ -87,36 +87,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Extra_Score, function (sprite, o
     music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.InBackground)
 })
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
-    scene.cameraShake(3, 50)
-    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-    for (let value of tiles.getTilesByType(sprites.castle.tileDarkGrass3)) {
-        Flower_Sprite = sprites.create(img`
-            ....................
-            ....................
-            ....................
-            ....................
-            ....................
-            ....................
-            ....................
-            ....................
-            ....................
-            ....................
-            .......1............
-            ......313...1.......
-            ......1.1..1.1..1...
-            ...1...1...313.313..
-            ..1.1.......1..1.1..
-            ..313...........1...
-            ...1................
-            ....................
-            ....................
-            ....................
-            `, SpriteKind.Food)
-        tiles.placeOnTile(Flower_Sprite, value)
-        tiles.setTileAt(location, assets.tile`transparency16`)
-        tiles.setWallAt(location, false)
-        Flower_Sprite.setFlag(SpriteFlag.AutoDestroy, true)
-    }
+    scene.cameraShake(1, 50)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (sprite, otherSprite) {
     sprites.destroy(otherSprite)
@@ -147,7 +118,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.builtin.forestTiles4, function (s
         ....................
         ....................
         `, SpriteKind.Life)
-    tiles.placeOnTile(mySprite, tiles.getTileLocation(randint(1, 20), randint(1, 20)))
+    tiles.placeOnTile(mySprite, location)
     tiles.setTileAt(location, assets.tile`transparency16`)
 })
 function loadLevel () {
@@ -294,7 +265,7 @@ function Enemys () {
             c 5 5 5 5 c 4 c c c c c c 5 c . 
             . c c c c c c . . . . . c c c . 
             `],
-        500,
+        100,
         characterAnimations.rule(Predicate.FacingLeft)
         )
         characterAnimations.loopFrames(
@@ -368,19 +339,15 @@ function Enemys () {
             . c 5 c c c c c c 4 c 5 5 5 5 c 
             . c c c . . . . . c c c c c c . 
             `],
-        500,
-        characterAnimations.rule(Predicate.NotMoving)
+        100,
+        characterAnimations.rule(Predicate.FacingRight)
         )
+        Snail_Sprite.x = 50
+        Snail_Sprite.follow(Gamer, 50)
         tiles.placeOnTile(Snail_Sprite, value)
         tiles.setTileAt(value, assets.tile`transparency16`)
-        Snail_Sprite.follow(Gamer, 50)
     }
 }
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    info.changeScoreBy(1)
-    sprites.destroy(otherSprite)
-    music.play(music.melodyPlayable(music.powerUp), music.PlaybackMode.InBackground)
-})
 function Stars () {
     sprites.destroyAllSpritesOfKind(SpriteKind.Extra_Score)
     for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
@@ -471,15 +438,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Tree, function (sprite, otherSpr
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
-    otherSprite.x = 150
-    otherSprite.y = 12
     music.play(music.melodyPlayable(music.powerDown), music.PlaybackMode.InBackground)
+    Gamer.setPosition(26, 21)
 })
 let Star_Sprite: Sprite = null
 let Snail_Sprite: Sprite = null
 let Tree_Sprite: Sprite = null
 let mySprite: Sprite = null
-let Flower_Sprite: Sprite = null
 let Money_Sprite: Sprite = null
 let Gamer: Sprite = null
 let CurrentLevel = 0
@@ -505,6 +470,7 @@ Gamer = sprites.create(img`
     . . . . f f . . f f . . . . 
     `, SpriteKind.Player)
 Gamer.setPosition(21, 56)
+Gamer.setScale(0.9, ScaleAnchor.Middle)
 controller.moveSprite(Gamer)
 characterAnimations.loopFrames(
 Gamer,

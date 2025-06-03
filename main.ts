@@ -136,8 +136,8 @@ function loadLevel () {
         Moneys()
         Stars()
         next_Level()
-        Gamer.x = 20
-        Gamer.y = 30
+        Gamer.x = 280
+        Gamer.y = 240
     } else {
         game.gameOver(true)
     }

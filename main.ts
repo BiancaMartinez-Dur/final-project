@@ -132,6 +132,7 @@ function loadLevel () {
         effects.confetti.endScreenEffect()
     } else if (CurrentLevel == 1) {
         tiles.setCurrentTilemap(tilemap`level2`)
+        info.setLife(1)
         Enemys()
         Moneys()
         Stars()
@@ -342,7 +343,7 @@ function Enemys () {
         100,
         characterAnimations.rule(Predicate.FacingRight)
         )
-        Snail_Sprite.x = 50
+        Snail_Sprite.x = 40
         Snail_Sprite.follow(Gamer, 50)
         tiles.placeOnTile(Snail_Sprite, value)
         tiles.setTileAt(value, assets.tile`transparency16`)
@@ -437,9 +438,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Tree, function (sprite, otherSpr
     music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprites.destroy(mySprite)
     info.changeLifeBy(-1)
     music.play(music.melodyPlayable(music.powerDown), music.PlaybackMode.InBackground)
-    Gamer.setPosition(26, 21)
+    Gamer.setPosition(21, 26)
 })
 let Star_Sprite: Sprite = null
 let Snail_Sprite: Sprite = null
